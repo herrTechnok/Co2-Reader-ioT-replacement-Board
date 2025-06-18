@@ -1,0 +1,6 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "scd30")(type "KiCad")(uri "${KIPRJMOD}/Libary/SCD30")(options "")(descr ""))
+  (lib (name "SSD1306")(type "KiCad")(uri "${KIPRJMOD}/Libary/SSD1306")(options "")(descr ""))
+  (lib (name "TB006-508-02BE")(type "KiCad")(uri "${KIPRJMOD}/Libary/TB006-508-02BE")(options "")(descr ""))
+)

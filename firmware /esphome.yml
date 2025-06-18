@@ -1,0 +1,153 @@
+esphome:
+  name: luftsensor-scd30
+  friendly_name: Luftsensor scd30
+
+esp8266:
+  board: d1
+
+# Enable logging
+logger:
+
+web_server:
+  port: 80
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "ht1NJ4GkKWQqNgCVhABDjwHshqPxHz5yEpC9WO3N/Kw="
+
+ota:
+  - platform: esphome
+    password: "4eeeeec9099d5ef711878213783dfaf7"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Luftsensor-Scd30"
+    password: "2dgCUGhEOfC4"
+
+captive_portal:
+
+i2c:
+  sda: GPIO5  # D2 auf NodeMCU
+  scl: GPIO3  # D1 auf NodeMCU
+  scan: true
+# SCD30 CO₂-Sensor
+sensor:
+  - platform: scd30
+    co2:
+      name: "SCD30 CO2"
+      id: co2_value
+      on_value:
+        then:
+          - if:
+              condition:
+                lambda: 'return id(auto_mode).state == true;'
+              then:
+                - script.execute: set_rgb_led
+    temperature:
+      name: "SCD30 Temperature"
+    humidity:
+      name: "SCD30 Humidity"
+    address: 0x61
+    update_interval: 30s
+
+# CO₂-Status als Textsensor für Home Assistant
+text_sensor:
+  - platform: template
+    name: "CO2 Qualität"
+    id: co2_status
+    update_interval: 30s
+    lambda: |-
+      if (id(co2_value).state < 800) {
+        return std::string("Gut");
+      } else if (id(co2_value).state < 1200) {
+        return std::string("Akzeptabel");
+      } else {
+        return std::string("Schlecht");
+      }
+
+# RGB-LED Steuerung (angepasste GPIOs)
+output:
+  - platform: esp8266_pwm
+    id: led_red
+    pin: GPIO14  # D5
+  - platform: esp8266_pwm
+    id: led_green
+    pin: GPIO12  # D6
+  - platform: esp8266_pwm
+    id: led_blue
+    pin: GPIO13  # D7
+
+light:
+  - platform: rgb
+    name: "CO2 Status LED"
+    id: co2_led
+    red: led_red
+    green: led_green
+    blue: led_blue
+    restore_mode: RESTORE_DEFAULT_OFF  # Manuelle Steuerung in HA bleibt unberührt
+
+# Automatisierungsmodus für LED (ein-/ausschaltbar)
+switch:
+  - platform: template
+    name: "Automatische CO2 LED"
+    id: auto_mode
+    restore_mode: RESTORE_DEFAULT_ON
+    optimistic: true  # Fehler behoben
+
+# Helligkeitsregler für das automatische LED-Skript (nicht für manuelle Steuerung)
+number:
+  - platform: template
+    name: "Automatische LED Helligkeit"
+    id: led_brightness
+    min_value: 0.0
+    max_value: 1.0
+    step: 0.05
+    initial_value: 1.0  # Standardhelligkeit für Automatikmodus
+    set_action:
+      then:
+        - script.execute: set_rgb_led  # Helligkeitsänderung aktualisiert das Skript
+
+# Skript zur CO₂-Farbsteuerung mit Helligkeit
+script:
+  - id: set_rgb_led
+    mode: restart
+    then:
+      - if:
+          condition:
+            lambda: 'return id(auto_mode).state == true;'
+          then:
+            - if:
+                condition:
+                  lambda: 'return id(co2_value).state < 800;'
+                then:
+                  - light.turn_on:
+                      id: co2_led
+                      brightness: !lambda 'return id(led_brightness).state;'  # Helligkeit nur im Automatikmodus
+                      red: 0%
+                      green: 100%
+                      blue: 0%
+            - if:
+                condition:
+                  lambda: 'return id(co2_value).state >= 800 && id(co2_value).state < 1200;'
+                then:
+                  - light.turn_on:
+                      id: co2_led
+                      brightness: !lambda 'return id(led_brightness).state;'  # Helligkeit nur im Automatikmodus
+                      red: 100%
+                      green: 100%
+                      blue: 0%
+            - if:
+                condition:
+                  lambda: 'return id(co2_value).state >= 1200;'
+                then:
+                  - light.turn_on:
+                      id: co2_led
+                      brightness: !lambda 'return id(led_brightness).state;'  # Helligkeit nur im Automatikmodus
+                      red: 100%
+                      green: 0%
+                      blue: 0%

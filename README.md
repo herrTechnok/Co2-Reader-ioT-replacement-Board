@@ -1,7 +1,6 @@
 # HackClub-Hackpad-Submission
 This is a replacement board for the air quality sensor that was previously used in my school but is frequently broken.
 | Schematic  | PCB |
-
 | ------------- | ------------- |
 |  ![schematic](https://github.com/user-attachments/assets/79145b0e-381e-4691-8bad-5af449e8e585)  |  ![PCB](https://github.com/user-attachments/assets/e06f8555-30aa-4010-a9e8-c8c19d6dc67d) |
 

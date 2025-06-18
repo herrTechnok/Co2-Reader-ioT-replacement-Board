@@ -1,2 +1,25 @@
-# Co2-Reader-ioT-replacement-Board
-Co2 Reader ioT replacement Board
+# HackClub-Hackpad-Submission
+This is a replacement board for the air quality sensor that was previously used in my school but is frequently broken.
+| Schematic  | PCB |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+
+### What are the Features?
+It fits into the same case and displays air quality using an RGB LED. But it could be used for something else, everything is configuable via HA
+
+The board runs ESPHome and sends data to Home Assistant. It measures temperature, humidity, and CO₂ levels.
+
+### BOM
+- 8,99€  YIXISI PCB Mount Screw Terminal Block -Amazon
+- 3€       APA106 led -Aliexpress
+- 1,69€  Wemos D1 Mini -Aliexpress
+
+| Price  | Component | Where? |
+| ------------- | ------------- | ------------- |
+| 8,99€  |  YIXISI PCB Mount Screw Terminal Block  | Amazon  |
+| 3€  | APA106 led  | Aliexpress  |
+| 1,69€  | Wemos D1 Mini  | Aliexpress  |
+| 2€  | PCB  | JLPCB  |
+| 7,81€  | PCB Shipping  | JLPCB  |
+| -----  |
+| 23,49€  |

@@ -1,4 +1,4 @@
-# HackClub-Hackpad-Submission
+# Co2 Reader ioT replacement Board
 This is a replacement board for the air quality sensor that was previously used in my school but gets frequently broken.
 | Schematic  | PCB |
 | ------------- | ------------- |

@@ -1,4 +1,3 @@
-![Hintergrund von „IMG_4110“ entfernt](https://github.com/user-attachments/assets/362fe2be-0dce-451a-951e-e6ba9ef926da)
 # HackClub-Hackpad-Submission
 This is a replacement board for the air quality sensor that was previously used in my school but is frequently broken.
 | Schematic  | PCB |

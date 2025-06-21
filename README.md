@@ -1,5 +1,6 @@
 # Co2 Reader ioT replacement Board
-![IMG_ABC637EF13AA-1](https://github.com/user-attachments/assets/89499e4f-3f24-44bf-9aae-f9eba693efc8 = 250x250)
+![Ohne Titel](https://github.com/user-attachments/assets/86f65ef6-865c-4b92-95d5-633de0fd107d)
+
 
 
 This is a replacement board for the air quality sensor that was previously used in my school but gets frequently broken.
